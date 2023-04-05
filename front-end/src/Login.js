@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Row, Col } from 'react-bootstrap'
 import './Login.css'
@@ -11,10 +11,17 @@ const Login = () => {
     const [inventory, setInventory] = useState(null);
     const [createFirstName, setCreateFirstName] = useState('');
     const [createLastName, setCreateLastName] = useState('');
+    const [userType, setUserType] = useState(false)
     const navigate = useNavigate();
 
     const Authenticate = (uname, pword) => {
-        navigate('/inventory', {state: {username:uname, password:pword}})
+        setUserType(true)
+        navigate('/inventory', {state: {username:uname, password:pword, userType: true}})
+    }
+
+    const Visitor = () => {
+        setUserType(false)
+        navigate('/inventory', {state: {username:'', password:'', userType: false}})
     }
 
     const addUser = (fName, lName, uname, pword) => {
@@ -41,7 +48,7 @@ const Login = () => {
                     <input className='theBox' type="text" id="login" placeholder="Username" onChange={e => setUsername(e.target.value)} />
                     <center><input type='password' className='theBox' id="password" placeholder="Password" onChange={e => setPassword(e.target.value)} /></center>
                     <center><Button onClick={() => Authenticate(username, password)}>Login</Button></center>
-                    <center><Button onClick={() => navigate(`/inventory`)}>Continue as Visitor</Button></center>
+                    <center><Button onClick={() => Visitor()}>Continue as Visitor</Button></center>
                     <br></br>
                     <div>Don't have an account? Create one below:</div>
                     <br></br>
