@@ -3,11 +3,12 @@
  * @returns { Promise<void> }
  */
 exports.up = function (knex) {
-    return knex.schema.createTable('inventory', table => {
+    return knex.schema.createTable('managers', table => {
         table.increments('id'); // adds an auto incrementing PK column
-        table.string('name').notNullable();
-        table.string('description');
-        table.integer('quantity');
+        table.string('first_name').notNullable();
+        table.string('last_name').notNullable();
+        table.string('username').notNullable();
+        table.string('password').notNullable();
         table.timestamps(true, true); // adds created_at and updated_at
     });
 };
@@ -16,6 +17,6 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {
-    return knex.schema.dropTableIfExists('inventory');
+exports.down = function(knex) {
+    return knex.schema.dropTableIfExists('managers');
 };

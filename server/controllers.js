@@ -7,21 +7,25 @@ module.exports = {
 
     addItem: (itemToInsert, itemDesc, Q) => {
         return knex("inventory")
-          .insert({name: itemToInsert})
-          .insert({description: itemDesc})
-          .insert({quantity: Q})
+          .insert({
+            name: itemToInsert,
+            description: itemDesc,
+            quantity: Q
+        })
     },
 
     newUser: (first, last, uname, pword) => {
         return knex("managers")
-        .insert({first_name: first})
-        .insert({last_name: last})
-        .insert({username: uname})
-        .insert({password: pword})
+        .insert({
+            first_name: first,
+            last_name: last,
+            username: uname,
+            password: pword
+        })
     },
 
     deleteItem: async (name, res) => {
-        let results = await knex("inventory")
+        return knex("inventory")
         .where("name", name)
         .del()
     }
