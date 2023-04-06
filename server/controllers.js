@@ -5,12 +5,21 @@ module.exports = {
         return knex.select("*").from("inventory");
     },
 
-    addItem: (itemToInsert, itemDesc, Q) => {
+    getAllManagers: () => {
+        return knex.select("*").from("managers");
+    },
+
+    getManagerInventory: () => {
+        return knex.select("*").from("inventory").where("manager_id", 5);
+    },
+
+    addItem: (itemToInsert, itemDesc, Q, id) => {
         return knex("inventory")
           .insert({
             name: itemToInsert,
             description: itemDesc,
-            quantity: Q
+            quantity: Q,
+            manager_id : id
         })
     },
 

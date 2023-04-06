@@ -8,7 +8,9 @@ exports.up = function (knex) {
         table.string('name').notNullable();
         table.string('description');
         table.integer('quantity');
-        table.timestamps(true, true); // adds created_at and updated_at
+        table.integer('manager_id').unsigned().notNullable();
+        table.foreign('manager_id').references('id').inTable('managers');
+        //table.timestamps(true, true); // adds created_at and updated_at
     });
 };
 

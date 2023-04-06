@@ -4,6 +4,7 @@ import React from "react";
 const Item = () => {
     const routeParams = useParams();
     const { username, password, item, description, quantity } = routeParams
+    console.log(routeParams)
     return (
         <li>
             <p>Item: {item}</p>

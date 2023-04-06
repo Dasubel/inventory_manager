@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Row, Col } from 'react-bootstrap'
 import './Login.css'
+var managerId = null;
 
 const Login = () => {
     const [username, setUsername] = useState('')
@@ -15,13 +16,28 @@ const Login = () => {
     const navigate = useNavigate();
 
     const Authenticate = (uname, pword) => {
-        setUserType(true)
-        navigate('/inventory', {state: {username:uname, password:pword, userType: true}})
+        fetch("http://localhost:8081/managers")
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+                for (let i = 0; i < data.length; i++) {
+                    if (uname === data[i].username) {
+                        managerId = data[i].id
+                    }
+                }
+                console.log(managerId)
+                if(managerId === null) {
+                        alert('Invalid username, please register with us!')
+                        return;
+                }
+                setInventory(data)
+                navigate('/inventory', { state: { username: uname, password: pword, userType: true, manager_Id: managerId } })
+            })
     }
 
     const Visitor = () => {
         setUserType(false)
-        navigate('/inventory', {state: {username:'', password:'', userType: false}})
+        navigate('/inventory', { state: { username: '', password: '', userType: false } })
     }
 
     const addUser = (fName, lName, uname, pword) => {

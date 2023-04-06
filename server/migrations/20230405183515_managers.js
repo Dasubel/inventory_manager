@@ -9,7 +9,7 @@ exports.up = function (knex) {
         table.string('last_name').notNullable();
         table.string('username').notNullable();
         table.string('password').notNullable();
-        table.timestamps(true, true); // adds created_at and updated_at
+        //table.timestamps(true, true); // adds created_at and updated_at
     });
 };
 

@@ -10,5 +10,4 @@ exports.seed = async function(knex) {
       {name: '', description: '', quantity: 0},
     ]);
   })
-  
 };
