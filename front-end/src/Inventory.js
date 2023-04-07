@@ -40,7 +40,7 @@ const Inventory = () => {
 
 
     const addItem = (itemName, Desc, Q, manager) => {
-        if (itemName !== undefined && Desc !== undefined && Q !== undefined) {
+        if (typeof itemName !== undefined && Desc !== undefined && isNaN(Q) === false) {
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -56,7 +56,7 @@ const Inventory = () => {
             setAdded(true);
             window.location.reload();
         } else {
-            alert(`Forgetting something, aren't we?`)
+            alert(`Check your inputs!`)
         }
     }
 
@@ -135,9 +135,11 @@ const Inventory = () => {
     const patchItem = (itemInInventory, item, desc, q) => {
         if (item === undefined && desc === undefined && q === undefined) {
             alert(`Silly goose, you didn't change anything!`)
-            window.location.reload();
             return
-        }
+        } else if (isNaN(q) === true) {
+            alert('Numbers please!')
+            return;
+        } else {
         const requestOptions = {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -152,6 +154,7 @@ const Inventory = () => {
         alert('Item has been edited!!')
         setEdit(false)
         window.location.reload();
+            }
     }
 
     const editItem = (theItem) => {
