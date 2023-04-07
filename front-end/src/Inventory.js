@@ -40,7 +40,7 @@ const Inventory = () => {
 
 
     const addItem = (itemName, Desc, Q, manager) => {
-        if (typeof itemName !== undefined && Desc !== undefined && isNaN(Q) === false) {
+        if (itemName !== undefined && Desc !== undefined && isNaN(Q) === false) {
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
