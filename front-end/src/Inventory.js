@@ -40,20 +40,24 @@ const Inventory = () => {
 
 
     const addItem = (itemName, Desc, Q, manager) => {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: itemName, description: Desc, quantity: Q, manager_Id: manager })
-        };
-        fetch("http://localhost:8081/inventory", requestOptions)
-            .then(() => fetch("http://localhost:8081/inventory")
-                .then((res) => res.json())
-                .then((data) => {
-                    setInventory(data)
-                }))
-        alert('Item added to your inventory!')
-        setAdded(true);
-        window.location.reload();
+        if (itemName !== undefined && Desc !== undefined && Q !== undefined) {
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: itemName, description: Desc, quantity: Q, manager_Id: manager })
+            };
+            fetch("http://localhost:8081/inventory", requestOptions)
+                .then(() => fetch("http://localhost:8081/inventory")
+                    .then((res) => res.json())
+                    .then((data) => {
+                        setInventory(data)
+                    }))
+            alert('Item added to your inventory!')
+            setAdded(true);
+            window.location.reload();
+        } else {
+            alert(`Forgetting something, aren't we?`)
+        }
     }
 
     const deleteItem = (itemNameToDelete) => {
@@ -129,7 +133,7 @@ const Inventory = () => {
     }
 
     const patchItem = (itemInInventory, item, desc, q) => {
-        if(item === undefined && desc === undefined && q === undefined) {
+        if (item === undefined && desc === undefined && q === undefined) {
             alert(`Silly goose, you didn't change anything!`)
             window.location.reload();
             return
