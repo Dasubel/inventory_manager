@@ -141,21 +141,21 @@ const Inventory = () => {
             alert('Numbers please!')
             return;
         } else {
-        const requestOptions = {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ itemToUpdate: itemInInventory, name: item, description: desc, quantity: q, manager_id: manager_Id })
-        };
-        fetch("http://localhost:8081/inventory", requestOptions)
-            .then(() => fetch("http://localhost:8081/inventory")
-                .then((res) => res.json())
-                .then((data) => {
-                    setInventory(data)
-                }))
-        alert('Item has been edited!!')
-        setEdit(false)
-        window.location.reload();
-            }
+            const requestOptions = {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ itemToUpdate: itemInInventory, name: item, description: desc, quantity: q, manager_id: manager_Id })
+            };
+            fetch("http://localhost:8081/inventory", requestOptions)
+                .then(() => fetch("http://localhost:8081/inventory")
+                    .then((res) => res.json())
+                    .then((data) => {
+                        setInventory(data)
+                    }))
+            alert('Item has been edited!!')
+            setEdit(false)
+            window.location.reload();
+        }
     }
 
     const editItem = (theItem) => {
@@ -173,42 +173,48 @@ const Inventory = () => {
                 <center><Button onClick={() => logout()}>Log Out</Button></center>
             </div> : <></>}
             <br></br>
-            YOUR INVENTORY:
+            <strong><span style={{color: 'white'}}>YOUR INVENTORY:</span></strong>
+            <br></br>
             {userType === false ?
                 <div>None, you're a guest!</div>
                 : <></>}
             <br></br>
             <Row>
-            {personalInventory?.map(items =>
-                <Col className='inventory' key={items.id}>
-                    <li>Item: {items.name} {edit && items.id === itemToEdit ? <center><input type="text" id="editItem" placeholder="Change Name" onChange={e => setEditItemName(e.target.value)} /></center> : <></>}</li>
-                    {items.description.length > 99 ?
-                        <div style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Description: {`${items.description.substring(0, 100)}...`}</div>
-                        : <div>Description: {items.description} {edit && items.id === itemToEdit ? <center><input type="text" id="editDesc" placeholder="Change Description" onChange={e => setEditDescription(e.target.value)} /></center> : <></>}</div>}
-                    <div style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Quanitity: {items.quantity} {edit && items.id === itemToEdit ? <center><input type='text' id="editQ" placeholder="Change Quantity" onChange={e => setEditQuantity(e.target.value)} /></center> : <></>}</div>
-                    <center><Button onClick={() => viewDetails(items.name, items.description, items.quantity, items.id, items.manager_id)}>Additional Details</Button></center>
-                    {userType ?
-                        <center><Button key={items.id} onClick={() => editItem(items.id)}>Edit Item</Button></center>
-                        : <></>}
-                    {edit && items.id === itemToEdit ?
-                        <center><Button onClick={() => patchItem(items.name, editItemName, editDescription, editQuantity)}>Done</Button></center>
+                {personalInventory?.map(items =>
+                    <Col className='inventory' key={items.id}>
+                        <li>Item: {items.name} {edit && items.id === itemToEdit ? <center><input type="text" id="editItem" placeholder="Change Name" onChange={e => setEditItemName(e.target.value)} /></center> : <></>}</li>
+                        {items.description.length > 99 ?
+                            <div style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Description: {`${items.description.substring(0, 100)}...`}</div>
+                            : <div>Description: {items.description} {edit && items.id === itemToEdit ? <center><input type="text" id="editDesc" placeholder="Change Description" onChange={e => setEditDescription(e.target.value)} /></center> : <></>}</div>}
+                        <div style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Quanitity: {items.quantity} {edit && items.id === itemToEdit ? <center><input type='text' id="editQ" placeholder="Change Quantity" onChange={e => setEditQuantity(e.target.value)} /></center> : <></>}</div>
+                        <center><Button onClick={() => viewDetails(items.name, items.description, items.quantity, items.id, items.manager_id)}>Additional Details</Button></center>
+                        {userType ?
+                            <center><Button key={items.id} onClick={() => editItem(items.id)}>Edit Item</Button></center>
+                            : <></>}
+                        {edit && items.id === itemToEdit ?
+                            <center><Button onClick={() => patchItem(items.name, editItemName, editDescription, editQuantity)}>Done</Button></center>
+                            : <></>}
+                    </Col>
+                )}
+            </Row>
+            <Row>
+                <Col className="bottom">
+                    <br></br>
+                    <center><Button onClick={() => viewAll()}>SEE ALL INVENTORY</Button></center>
+                    <br></br>
+                    {userType ? <div>
+                        Add something new!
+                        <center><input type="text" id="createItem" placeholder="Item Name" onChange={e => setItemName(e.target.value)} /></center>
+                        <center><input type="text" id="createDesc" placeholder="Description" onChange={e => setDescription(e.target.value)} /></center>
+                        <center><input type='text' id="createQ" placeholder="Quantity" onChange={e => setQuantity(e.target.value)} /></center>
+                        <center><Button onClick={() => addItem(itemName, description, quantity, manager_Id)}>Add Item!</Button></center>
+                        Don't like that item? Remove it!
+                        <center><input type='text' id="deleteItem" placeholder="Item Name to Delete" onChange={e => setItemToDelete(e.target.value)} /></center>
+                        <center><Button onClick={() => deleteItem(itemToDelete)}>Delete Item!</Button></center>
+                    </div>
                         : <></>}
                 </Col>
-            )}
             </Row>
-            <center><Button onClick={() => viewAll()}>SEE ALL INVENTORY</Button></center>
-            <br></br>
-            {userType ? <div>
-                Add something new!
-                <center><input type="text" id="createItem" placeholder="Item Name" onChange={e => setItemName(e.target.value)} /></center>
-                <center><input type="text" id="createDesc" placeholder="Description" onChange={e => setDescription(e.target.value)} /></center>
-                <center><input type='text' id="createQ" placeholder="Quantity" onChange={e => setQuantity(e.target.value)} /></center>
-                <center><Button onClick={() => addItem(itemName, description, quantity, manager_Id)}>Add Item!</Button></center>
-                Don't like that item? Remove it!
-                <center><input type='text' id="deleteItem" placeholder="Item Name to Delete" onChange={e => setItemToDelete(e.target.value)} /></center>
-                <center><Button onClick={() => deleteItem(itemToDelete)}>Delete Item!</Button></center>
-            </div>
-                : <></>}
         </Container>
     )
 }

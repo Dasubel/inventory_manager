@@ -31,7 +31,7 @@ const All = () => {
 
     return (
         <Container className="background" fluid>
-        All INVENTORY:
+        <strong><span style={{color: 'white'}}>All INVENTORY:</span></strong>
         <br></br>
         {inventory?.map(items =>
             <Col className="inventory" key={items.id}>
