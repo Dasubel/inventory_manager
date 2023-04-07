@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button } from 'react-bootstrap'
+import { Button, Container, Col } from 'react-bootstrap'
+import './All.css'
 
 const All = () => {
     const [inventory, setInventory] = useState()
@@ -29,19 +30,20 @@ const All = () => {
     }
 
     return (
-        <div>
+        <Container className="background" fluid>
         All INVENTORY:
+        <br></br>
         {inventory?.map(items =>
-            <div key={items.id}>
+            <Col className="inventory" key={items.id}>
                 <li>Item: {items.name}</li>
                 {items.description.length > 99 ?
                     <p style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Description: {`${items.description.substring(0, 100)}...`}</p>
                     : <p>Description: {items.description}</p>}
                 <p style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Quanitity: {items.quantity}</p>
                 <center><Button onClick={() => viewDetails(items.name, items.description, items.quantity)}>Additional Details</Button></center>
-            </div>
+            </Col>
         )}
-        </div>
+        </Container>
     )
 }
 

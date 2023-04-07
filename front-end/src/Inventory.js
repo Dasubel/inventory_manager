@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Button, Container } from 'react-bootstrap'
+import { Button, Container, Col, Row } from 'react-bootstrap'
 import { useLocation, useNavigate } from "react-router-dom";
+import './Inventory.css'
 
 const Inventory = () => {
     const [inventory, setInventory] = useState()
@@ -167,7 +168,7 @@ const Inventory = () => {
     }
 
     return (
-        <Container>
+        <Container className='background' fluid>
             {userType === true ? <div>Logged in as: {username}
                 <center><Button onClick={() => logout()}>Log Out</Button></center>
             </div> : <></>}
@@ -177,8 +178,9 @@ const Inventory = () => {
                 <div>None, you're a guest!</div>
                 : <></>}
             <br></br>
+            <Row>
             {personalInventory?.map(items =>
-                <div key={items.id}>
+                <Col className='inventory' key={items.id}>
                     <li>Item: {items.name} {edit && items.id === itemToEdit ? <center><input type="text" id="editItem" placeholder="Change Name" onChange={e => setEditItemName(e.target.value)} /></center> : <></>}</li>
                     {items.description.length > 99 ?
                         <div style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Description: {`${items.description.substring(0, 100)}...`}</div>
@@ -188,11 +190,12 @@ const Inventory = () => {
                     {userType ?
                         <center><Button key={items.id} onClick={() => editItem(items.id)}>Edit Item</Button></center>
                         : <></>}
-                    {edit ?
+                    {edit && items.id === itemToEdit ?
                         <center><Button onClick={() => patchItem(items.name, editItemName, editDescription, editQuantity)}>Done</Button></center>
                         : <></>}
-                </div>
+                </Col>
             )}
+            </Row>
             <center><Button onClick={() => viewAll()}>SEE ALL INVENTORY</Button></center>
             <br></br>
             {userType ? <div>

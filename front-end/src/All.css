@@ -1,0 +1,14 @@
+.background {
+    text-align: center;
+    background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));
+}
+
+.inventory {
+    display:inline-block;
+    vertical-align: top;
+    align-items: center;
+    justify-content: space-around;
+    width:200px;
+    height:200px;
+    border: 1px solid rgb(0, 0, 0);
+}
