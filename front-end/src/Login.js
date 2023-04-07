@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Row, Col } from 'react-bootstrap'
 import './Login.css'
-var managerId = null;
 
 const Login = () => {
+    var managerId = null;
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [createUsername, setCreateUsername] = useState('')
@@ -19,15 +19,13 @@ const Login = () => {
         fetch("http://localhost:8081/managers")
             .then((res) => res.json())
             .then((data) => {
-                console.log(data)
                 for (let i = 0; i < data.length; i++) {
-                    if (uname === data[i].username) {
+                    if (uname === data[i].username && pword === data[i].password) {
                         managerId = data[i].id
                     }
                 }
-                console.log(managerId)
                 if(managerId === null) {
-                        alert('Invalid username, please register with us!')
+                        alert('Invalid username or password, check your information again!  If you do not have an account, please register with us!')
                         return;
                 }
                 setInventory(data)

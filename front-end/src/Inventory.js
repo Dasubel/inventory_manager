@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container } from 'react-bootstrap'
 import { useLocation, useNavigate } from "react-router-dom";
-var managerInventory = [];
 
 const Inventory = () => {
     const [inventory, setInventory] = useState()
@@ -11,22 +10,35 @@ const Inventory = () => {
     const [added, setAdded] = useState(false);
     const [deleted, setDeleted] = useState(false)
     const [itemToDelete, setItemToDelete] = useState();
+    const [personalInventory, setPersonalInventory] = useState();
+    const [edit, setEdit] = useState(false)
+    const [editItemName, setEditItemName] = useState();
+    const [editDescription, setEditDescription] = useState();
+    const [editQuantity, setEditQuantity] = useState();
+    const [itemToEdit, setItemToEdit] = useState();
+    var managerInventory = [];
     const { state } = useLocation();
-    const { userType, username, password, manager_Id } = state;
+    console.log(state)
+    const { userType, username, password, manager_Id, edited } = state;
     const navigate = useNavigate();
+    let editable = false;
+
     useEffect(() => {
         fetch("http://localhost:8081/inventory")
             .then((res) => res.json())
             .then((data) => {
-                managerInventory = [];
                 for (let i = 0; i < data.length; i++) {
                     if (manager_Id === data[i].manager_id) {
+                        console.log('here')
                         managerInventory.push(data[i])
                     }
                 }
+                setPersonalInventory(managerInventory)
                 setInventory(data)
             })
-    }, [added, deleted]);
+    }, [edited]);
+
+
 
     const addItem = (itemName, Desc, Q, manager) => {
         const requestOptions = {
@@ -82,7 +94,10 @@ const Inventory = () => {
             })
     }
 
-    const viewDetails = (item, desc, q) => {
+    const viewDetails = (item, desc, q, itemId, managerId) => {
+        if (managerId === manager_Id) {
+            editable = true;
+        }
         navigate(`/inventory/${item}`, {
             state:
             {
@@ -90,36 +105,74 @@ const Inventory = () => {
                 password: password,
                 item: item,
                 description: desc,
-                quantity: q
+                quantity: q,
+                userType: userType,
+                id: itemId,
+                editable: editable
             }
         })
     }
 
-    const editItem = (item) => {
-        navigate(`/inventory/edit/${item}`)
+    const patchItem = (itemInInventory, item, desc, q) => {
+        if(item === undefined && desc === undefined && q === undefined) {
+            alert(`Silly goose, you didn't change anything!`)
+            window.location.reload();
+            return
+        }
+        const requestOptions = {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ itemToUpdate: itemInInventory, name: item, description: desc, quantity: q, manager_id: manager_Id })
+        };
+        fetch("http://localhost:8081/inventory", requestOptions)
+            .then(() => fetch("http://localhost:8081/inventory")
+                .then((res) => res.json())
+                .then((data) => {
+                    setInventory(data)
+                }))
+        alert('Item has been edited!!')
+        setEdit(false)
+        window.location.reload();
+    }
+
+    const editItem = (theItem) => {
+        setEdit(true);
+        setItemToEdit(theItem);
+    }
+
+    const logout = () => {
+        navigate('/')
     }
 
     return (
         <Container>
+            {userType === true ? <div>Logged in as: {username}
+                <center><Button onClick={() => logout()}>Log Out</Button></center>
+            </div> : <></>}
+            <br></br>
             YOUR INVENTORY:
-            {manager_Id === null ?
+            {userType === false ?
                 <div>None, you're a guest!</div>
                 : <></>}
             <br></br>
-            {managerInventory?.map(items =>
+            {personalInventory?.map(items =>
                 <div key={items.id}>
-                    <li>Item: {items.name}</li>
+                    <li>Item: {items.name} {edit && items.id === itemToEdit ? <center><input type="text" id="editItem" placeholder="Change Name" onChange={e => setEditItemName(e.target.value)} /></center> : <></>}</li>
                     {items.description.length > 99 ?
-                        <p style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Description: {`${items.description.substring(0, 100)}...`}</p>
-                        : <p>Description: {items.description}</p>}
-                    <p style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Quanitity: {items.quantity}</p>
-                    <center><Button onClick={() => viewDetails(items.name, items.description, items.quantity)}>Additional Details</Button></center>
+                        <div style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Description: {`${items.description.substring(0, 100)}...`}</div>
+                        : <div>Description: {items.description} {edit && items.id === itemToEdit ? <center><input type="text" id="editDesc" placeholder="Change Description" onChange={e => setEditDescription(e.target.value)} /></center> : <></>}</div>}
+                    <div style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Quanitity: {items.quantity} {edit && items.id === itemToEdit ? <center><input type='text' id="editQ" placeholder="Change Quantity" onChange={e => setEditQuantity(e.target.value)} /></center> : <></>}</div>
+                    <center><Button onClick={() => viewDetails(items.name, items.description, items.quantity, items.id, items.manager_id)}>Additional Details</Button></center>
                     {userType ?
-                        <center><Button onClick={() => editItem(items.name)}>Edit Item</Button></center>
+                        <center><Button key={items.id} onClick={() => editItem(items.id)}>Edit Item</Button></center>
+                        : <></>}
+                    {edit ?
+                        <center><Button onClick={() => patchItem(items.name, editItemName, editDescription, editQuantity)}>Done</Button></center>
                         : <></>}
                 </div>
             )}
             All INVENTORY:
+            {console.log(managerInventory)}
             {inventory?.map(items =>
                 <div key={items.id}>
                     <li>Item: {items.name}</li>

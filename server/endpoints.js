@@ -18,7 +18,14 @@ app.listen(port, () => {
 app.get('/inventory', (req, res) => {
     controllers.getAllInventory()
         .then(data => {
-            console.log(data)
+            res.status(200).send(data)
+        })
+})
+
+app.get(`/item`, (req, res) => {
+    console.log(req.body)
+    controllers.getItem()
+        .then(data => {
             res.status(200).send(data)
         })
 })
@@ -30,13 +37,12 @@ app.get('/managers', (req, res) => {
         })
 })
 
-// app.get(`/inventory/${id}`, (req, res) => {
-//     controllers.getManagerInventory()
-//         .then(data => {
-//             //console.log(data)
-//             res.status(200).send(data)
-//         })
-// })
+app.patch('/inventory', (req, res) => {
+    console.log(req.body)
+    const { itemToUpdate, name, description, quantity, manager_Id } = req.body
+    controllers.updateItem( itemToUpdate, name, description, quantity, manager_Id)
+        .then(() => res.status(201).send(name, description, quantity))
+});
 
 app.delete('/inventory', (req, res) => {
     const { name } = req.body
