@@ -113,6 +113,22 @@ const Inventory = () => {
         })
     }
 
+    const viewAll = (item, desc, q, itemId, managerId) => {
+        navigate(`/inventory/all`, {
+            state:
+            {
+                username: username,
+                password: password,
+                item: item,
+                description: desc,
+                quantity: q,
+                userType: userType,
+                id: itemId,
+                editable: editable
+            }
+        })
+    }
+
     const patchItem = (itemInInventory, item, desc, q) => {
         if(item === undefined && desc === undefined && q === undefined) {
             alert(`Silly goose, you didn't change anything!`)
@@ -171,18 +187,7 @@ const Inventory = () => {
                         : <></>}
                 </div>
             )}
-            All INVENTORY:
-            {console.log(managerInventory)}
-            {inventory?.map(items =>
-                <div key={items.id}>
-                    <li>Item: {items.name}</li>
-                    {items.description.length > 99 ?
-                        <p style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Description: {`${items.description.substring(0, 100)}...`}</p>
-                        : <p>Description: {items.description}</p>}
-                    <p style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>Quanitity: {items.quantity}</p>
-                    <center><Button onClick={() => viewDetails(items.name, items.description, items.quantity)}>Additional Details</Button></center>
-                </div>
-            )}
+            <center><Button onClick={() => viewAll()}>SEE ALL INVENTORY</Button></center>
             <br></br>
             {userType ? <div>
                 Add something new!
