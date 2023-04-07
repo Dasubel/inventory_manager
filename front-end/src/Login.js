@@ -24,9 +24,9 @@ const Login = () => {
                         managerId = data[i].id
                     }
                 }
-                if(managerId === null) {
-                        alert('Invalid username or password, check your information again!  If you do not have an account, please register with us!')
-                        return;
+                if (managerId === null) {
+                    alert('Invalid username or password, check your information again!  If you do not have an account, please register with us!')
+                    return;
                 }
                 setInventory(data)
                 navigate('/inventory', { state: { username: uname, password: pword, userType: true, manager_Id: managerId } })
@@ -39,19 +39,24 @@ const Login = () => {
     }
 
     const addUser = (fName, lName, uname, pword) => {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ first_name: fName, last_name: lName, username: uname, password: pword })
-        };
-        fetch("http://localhost:8081/managers", requestOptions)
-            .then(() => fetch("http://localhost:8081/inventory")
-                .then((res) => res.json())
-                .then((data) => {
-                    setInventory(data)
-                }))
-        alert('User account created, please log in.')
-        window.location.reload();
+        if (fName && lName && uname && pword) {
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ first_name: fName, last_name: lName, username: uname, password: pword })
+            };
+            fetch("http://localhost:8081/managers", requestOptions)
+                .then(() => fetch("http://localhost:8081/inventory")
+                    .then((res) => res.json())
+                    .then((data) => {
+                        setInventory(data)
+                    }))
+            alert('User account created, please log in.')
+            window.location.reload();
+        } else {
+            alert('It appears you left something out.')
+            return
+        }
     }
 
     return (
