@@ -10,7 +10,7 @@ However, if you register an account with us, you can add any item you want to th
 
 FIRST STEPS:
 
-After forking and cloning this repository, open up the main folder "inventory_manager".  From here, using several terminals, change directory into front-end and run "npm start".  Change directory from another terminal into server and again run "npm start".  Finally, spin up docker with "docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 \
+After forking and cloning this repository, using several terminals, change directory into front-end and run "npm start".  Change directory from another terminal into server and again run "npm start".  Finally, spin up docker with "docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 \
 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres".
 
 At this point, the server will be talking to the database, and the webpage running from the front end will be able to display the information correctly.
