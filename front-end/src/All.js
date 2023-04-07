@@ -4,11 +4,8 @@ import { Button } from 'react-bootstrap'
 
 const All = () => {
     const [inventory, setInventory] = useState()
-    const [itemName, setItemName] = useState();
-    const [description, setDescription] = useState();
-    const [quantity, setQuantity] = useState();
     const { state } = useLocation();
-    const { userType, username, password, manager_Id, edited } = state;
+    const { userType, username, password } = state;
     const navigate = useNavigate();
     useEffect(() => {
         fetch("http://localhost:8081/inventory")

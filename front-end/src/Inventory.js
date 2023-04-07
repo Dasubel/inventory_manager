@@ -34,9 +34,8 @@ const Inventory = () => {
                     }
                 }
                 setPersonalInventory(managerInventory)
-                setInventory(data)
             })
-    }, [edited]);
+    }, []);
 
 
 

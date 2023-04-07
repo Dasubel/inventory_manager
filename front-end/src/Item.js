@@ -1,10 +1,9 @@
 import { useLocation } from "react-router-dom";
-import React, { useState } from "react";
+import React from "react";
 
 const Item = () => {
     const { state } = useLocation();
-    const { username, password, item, description, quantity, userType, id, editable } = state;
-    const [edit, setEdit] = useState(false)
+    const { item, description, quantity } = state;
 
     return (
         <div>
