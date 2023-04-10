@@ -1,4 +1,4 @@
-**Welcome to your very own inventory manager!
+# Welcome to your very own inventory manager!
 
 First thing's first, create your account!  Once you have created your account with us,
 you'll be able to create and then subsequently see the items that are in your inventory.
@@ -6,11 +6,11 @@ you'll be able to create and then subsequently see the items that are in your in
 Shy? Don't want to create an account yet?  That's okay!  Take a look at all inventory
 in the system as a visitor. (assuming someone has added inventory, the system did not come pre-stocked!)
 
-#STEPS FOR OPERATION:
+## STEPS FOR OPERATION:
 
 Please follow these steps for success!
 
-#Assuming you have forked/cloned this repository, open up the folder and do the following:
+## Assuming you have forked/cloned this repository, open up the folder and do the following:
 
 1) First we'll want to establish our database that the managers and inventory will be in.  In your terminal, run ```docker pull postgres```.
 2) After docker has updated, you will need to create the directories that will house your database data by running this command ```mkdir -p $HOME/docker/volumes/postgres```.
@@ -20,13 +20,13 @@ Please follow these steps for success!
 6) When you type in ```\l``` it will populate a list of databases. You will need to add a database to that list of databases for this application. 
 7) Run the following two commands: ```CREATE DATABASE inventory;``` and ```CREATE DATABASE managers;```
 
-#With Docker up and running and our databases open, I like to keep that in a terminal window for future use and open a new one.  Next, continue our installation steps to get up and running:
+## With Docker up and running and our databases open, I like to keep that in a terminal window for future use and open a new one.  Next, continue our installation steps to get up and running:
 
 1) Change directory into "server" and run ```npm install```
 2) While still in the server directory, run ```npx knex migrate:latest``` followed by ```npx knex seed:run```.  This will get the initial tables into the database.  Note:  the inventory will be empty!  You haven't added anything yet!
 3) Spin up the server by typing the command ```npm start```
 
-#Let's get our front end talking to the server and the database so we can manage that inventory!
+## Let's get our front end talking to the server and the database so we can manage that inventory!
 
 1) Open a new terminal window and change directory into "front-end" and run ```npm-install```
 2) After installation is complete, run the command ```npm start```.
