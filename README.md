@@ -28,7 +28,7 @@ Please follow these steps for success!
 
 ## Let's get our front end talking to the server and the database so we can manage that inventory!
 
-1) Open a new terminal window and change directory into "front-end" and run ```npm-install```
+1) Open a new terminal window and change directory into "front-end" and run ```npm install```
 2) After installation is complete, run the command ```npm start```.
 3) In the window that has opened, you'll be greeted with a login page!
 
